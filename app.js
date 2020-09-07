@@ -1,17 +1,30 @@
-var express=require("express");
-var app=express();
-var bodyParser=require("body-parser")
-var mongoose=require("mongoose")
-var photoRoutes = require("./photos");
-var startPage=require("./index")
-var passport=require("passport")
-var LocalStrategy=require("passport-local")
-var travel_photo = require("./models/schema1")
-var User=require("./models/user");
+// NPM Requirements
+var express           = require("express"),
+    app               = express(),
+    bodyParser        = require("body-parser"),
+    mongoose          = require("mongoose"),
+    passport          = require("passport"),
+    LocalStrategy     = require("passport-local");
+
+var photoRoutes       = require("./photos");
+var startPage         = require("./index")
+
+//Blog Schema
+var travel_photo      = require("./models/schema1")
+var User              = require("./models/user");
+
+//Local DataServer Connection
 mongoose.connect("mongodb://localhost:27017/travel_photo", {useNewUrlParser:true});
-app.set("view engine","ejs");
-app.use(bodyParser.urlencoded({extended:true}))
-app.use(express.static(__dirname + "/public"));
+
+//Basic NodeJS Settings
+app.set("view engine", "ejs");
+app.use(express.static("public"));
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(expressSanitizer());
+app.use(MethodOverride('_method'));
+
+//Settings LogIn
 app.use(require("express-session")({
     secret: "Once again Rusty wins cutest dog!",
     resave: false,
@@ -29,20 +42,41 @@ app.use(function(req, res, next){
 
 app.use("/photos",photoRoutes)
 app.use("/",startPage)
+
+
+//Creat a Database
+
+/*
+travel_photo.create( {
+    name: "Ladakh",
+    image: "https://www.thrillophilia.com/blog/wp-content/uploads/2015/01/Chadar-trek-1024x577.jpg",
+    location:"ladakh",    
+},function(err,travel_photo){
+    if(err){
+        console.log(err);
+    }
+});
+*/
+
+//Routing Starts Here
+
 app.get("/photos/:id",function(req,res){
     travel_photo.findById(req.params.id,function(err,foundcamground){
         if(err){
             console.log(err);
         }
-        else    res.render("show",{kanak:foundcamground});
-        })
+        else
+        res.render("show",{kanak:foundcamground});
+        });
         
 });
+
+// Register Route
 app.get("/register", function(req, res){
     res.render("register"); 
  });
 
- app.post("/register", function(req, res){
+app.post("/register", function(req, res){
      var newUser = new User({username: req.body.username});
      User.register(newUser, req.body.password, function(err, user){
          if(err){
@@ -54,6 +88,8 @@ app.get("/register", function(req, res){
          });
      });
  });
+
+ //LogIN Route
  app.get("/login", function(req, res){
     res.render("login"); 
  });
@@ -63,6 +99,8 @@ app.get("/register", function(req, res){
          failureRedirect: "/login"
      }), function(req, res){
  });
+
+ //LogOUT Route
  app.get("/logout", function(req, res){
     req.logout();
     res.redirect("/");
@@ -75,7 +113,7 @@ app.get("/register", function(req, res){
      res.redirect("/login");
  }
  
-
+// Server Listen Route
 app.listen(3000, function() { 
     console.log('Server listening on port 3000'); 
   });

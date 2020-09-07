@@ -1,0 +1,27 @@
+ <%- include ("partials/header") %>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/travel.css">
+<div class="container">
+ 	<div class="row">
+ 		<div class="col-lg-12">
+ 			<div class="content">
+ 				<h1>Travelmania</h1>
+ 				<h3>Start planning your next trip today</h3>
+ 				<hr>
+
+                <p>
+                    <form action="/photos" method="GET" class="form-inline">
+                        <div class="form-group">
+                            <input class="form-control" type="text" name="search" placeholder="places search..">
+                            <input type="submit" value="search" class="btn btn-default">
+            
+                        </div>
+                    </form>
+                </p>
+ 			</div>
+ 		</div>
+ 	</div>
+</div>
+    
+
+<%- include("partials/footer") %>

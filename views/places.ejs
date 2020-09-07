@@ -1,0 +1,23 @@
+<%- include("partials/header") %>
+<div class="container">
+<header class="jumbotron">
+    <div class="container">
+        <h1>Welcome to TravelMania!!</h1>
+        <p>View our handpicked Adventurous places from all over the world</p>
+</header>
+<div class="row text-centre" style="display: flex; flex-wrap: wrap;">
+    <% kanak.forEach(function(camground){ %>
+        <div class="col md-3 col-sm-6">
+            <div class="thumbnail">  
+                <img src="<%= camground.image %>">
+                <div class="caption">
+                    <h4><%= camground.name %></h4>
+                    <h4><%= camground.location%></h4>
+                </div>
+                <a href="/photos/<%= camground._id %>" class="btn btn-primary">more info</a>
+            </div>
+        </div>
+    <% }); %>
+</div>
+</div>
+<%- include("partials/footer") %>
