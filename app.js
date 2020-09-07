@@ -14,15 +14,15 @@ var travel_photo      = require("./models/schema1")
 var User              = require("./models/user");
 
 //Local DataServer Connection
-mongoose.connect("mongodb://localhost:27017/travel_photo", {useNewUrlParser:true});
+mongoose.connect("mongodb://localhost:27017/travel_photo", { useNewUrlParser: true, useUnifiedTopology: true });
 
 //Basic NodeJS Settings
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(expressSanitizer());
-app.use(MethodOverride('_method'));
+//app.use(expressSanitizer());
+//app.use(MethodOverride('_method'));
 
 //Settings LogIn
 app.use(require("express-session")({
